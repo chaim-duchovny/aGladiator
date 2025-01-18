@@ -18,7 +18,9 @@ class Boardgame:
         self.red_piece_selected = False
         self.piece_to_return_black = None
         self.piece_to_return_red = None
+        self.all_pieces_placed = False
         self.move_history = {}
+        self.flag = True
 
     def create(self):
         for row in range(ROWS):
@@ -186,19 +188,9 @@ class Boardgame:
 
         if len(self.move_history[piece]) > 3:
             self.move_history[piece].pop(0)
-            
-        print(self.move_history[piece])
-        print(f"{piece}")
-        print(f"{piece.color}")
-        return True
         
-    #def is_repetitive_move(self, piece):
-        #if piece not in self.move_history or len(self.move_history[piece]) < 3:
-            #return False
-        #return self.move_history[piece][0][1] == self.move_history[piece][1][0] == self.move_history[piece][2][1] and \
-           #self.move_history[piece][0][0] == self.move_history[piece][2][0]
+        return True
             
-    
     def valid_move(self, startx, starty, endx, endy, piece):
         startx, starty, endx, endy = map(int, (startx, starty, endx, endy))
     
@@ -364,7 +356,7 @@ class Boardgame:
                     self.squares[defendery][defenderx].piece  = attacker
                     self.squares[attackery][attackerx].piece = None
 
-            elif attacker.rank > defender.rank:
+            elif attacker.rank > defender.rank and defender.rank != 1:
                 if attacker.color == "red" and defender.color == "black":
                     original_position = self.get_original_position_red(self.squares[attackery][attackerx].piece)
                     attackery_original, attackerx_original = original_position
@@ -381,7 +373,7 @@ class Boardgame:
 
             #Attacker.rank = Defender.rank
             else:
-                if attacker.color == "red" and defender.color == "black":
+                if attacker.color == "red" and defender.color == "black" and defender.rank != 1:
                     original_position1 = self.get_original_position_red(self.squares[attackery][attackerx].piece)
                     attackery_original, attackerx_original = original_position1
                     original_position2 = self.get_original_position_black(self.squares[defendery][defenderx].piece)
@@ -393,7 +385,7 @@ class Boardgame:
                     self.squares[attackery][attackerx].piece = None
                     self.squares[defendery][defenderx].piece = None
                     
-                if attacker.color == "black" and defender.color == "red":
+                if attacker.color == "black" and defender.color == "red" and defender.rank != 1:
                     original_position1 = self.get_original_position_black(self.squares[attackery][attackerx].piece)
                     attackery_original, attackerx_original = original_position1
                     original_position2 = self.get_original_position_red(self.squares[defendery][defenderx].piece)
@@ -414,7 +406,12 @@ class Boardgame:
         return False
 
     def check_all_pieces_placed(self):
-        return all(square.has_piece() for row in self.squares[:4] for square in row[:10]) and all(square.has_piece() for row in self.squares[6:] for square in row[:10])
+        for row in range(ROWS):
+            for col in range(COLS):
+                if ((0 <= row <= 3) or (6 <= row <= 9)) and (0 <= col <= 9):
+                    if not self.squares[row][col].has_piece():
+                        return False
+        return True
     
     def check_win_condition(self):
         black_flag_found = False
@@ -465,6 +462,9 @@ class Boardgame:
         return False  # No valid moves found
     
     def handle_placement(self, button, row, col):
+        if self.check_all_pieces_placed():
+            return None
+        
         if button == 1:
             if (0 <= row <= 3) and (10 <= col <= 12):
                 self.handle_black_piece_selection(row, col)
@@ -484,7 +484,7 @@ class Boardgame:
                 self.reset_piece_placement()
                 return None
                 
-        elif button == 3:
+        elif button == 3 and self.flag:
             if (0 <= row <= 3) and (0 <= col <= 9):
                 self.return_piece_black_selection(row, col)
                 return (row, col)
@@ -504,5 +504,6 @@ class Boardgame:
                 if original_position == (row, col):
                     self.return_piece_red_return(row, col)
                     return None
-
-        return None
+                
+        self.reset_piece_placement()
+        return (row, col)

@@ -50,18 +50,20 @@ class Main:
                     col = pos[0] // RECT_WIDTH
                     row = pos[1] // RECT_HEIGHT
                     if self.phase == "placement":
-                        if self.phase == "placement" and self.boardgame.check_all_pieces_placed():
+                        if self.boardgame.check_all_pieces_placed():
+                            self.flag = False
                             self.phase = "gameplay"
                             self.current_player = "red"
+                            pygame.display.update()
                         result = self.boardgame.handle_placement(event.button, row, col)
                         if result:
-                            self.highlighted_square = result  # Set highlighted square to selected piece
+                            self.highlighted_square = result  
                         else:
                             self.highlighted_square = None
                     else:
                         result = self.handle_gameplay(event.button, row, col)
-                        if result:  # If a piece was selected, update highlighted_square
-                            self.highlighted_square = result  # Set highlighted square to selected piece
+                        if result: 
+                            self.highlighted_square = result  
                         else:
                             self.highlighted_square = None
 
@@ -75,6 +77,7 @@ class Main:
                 if self.boardgame.select_piece(row, col, self.current_player):
                     self.game.show_valid_moves_flag = True
                     self.game.show_valid_moves(self.screen, row, col)
+                    pygame.display.update()
                     return (row, col)
             else:
                 start_row, start_col = self.boardgame.selected_piece
@@ -84,9 +87,7 @@ class Main:
                     return (row, col)
                 else:
                     move_result = self.boardgame.move_piece(start_col, start_row, col, row, self.current_player)
-
                     if move_result:
-                        print("Move successful; hiding valid moves.")
                         self.game.show_valid_moves_flag = False
                         win_condition = self.boardgame.check_win_condition()
                         if win_condition:

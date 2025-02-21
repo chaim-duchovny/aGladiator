@@ -37,8 +37,8 @@ class Boardgame:
             (4, "Cap.", Captain),
             (4, "Lie.", Lieutenant), 
             (4, "Ser.", Sergeant), 
-            (5, "Miner", Miner),
-            (8, "Scout", Scout), 
+            (5, "Min.", Miner),
+            (8, "Sct.", Scout), 
             (1, "Spy", Spy), 
             (1, "Flag", Flag)
         ]
@@ -64,8 +64,8 @@ class Boardgame:
             (4, "Cap.", Captain),
             (4, "Lie.", Lieutenant), 
             (4, "Ser.", Sergeant), 
-            (5, "Miner", Miner),
-            (8, "Scout", Scout), 
+            (5, "Min.", Miner),
+            (8, "Sct.", Scout), 
             (1, "Spy", Spy), 
             (1, "Flag", Flag)
         ]
@@ -222,9 +222,15 @@ class Boardgame:
                 return False
 
             x, y = startx + dx, starty + dy
+
             while (x, y) != (endx, endy):
+
+                if (y, x) in SPECIAL_POSITION:
+                    return False
+
                 if self.squares[y][x].has_piece():
                     return False
+                
                 x += dx
                 y += dy
         

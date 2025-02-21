@@ -329,14 +329,14 @@ class Boardgame:
                     original_position = self.get_original_position_black(self.squares[attackery][attackerx].piece)
                     attackery_original, attackerx_original = original_position
                     self.squares[attackery_original][attackerx_original].piece = attacker
-                    self.squares[defendery_original][defenderx_original].number += 1
+                    self.squares[attackery_original][attackerx_original].number += 1
                     self.squares[attackery][attackerx].piece = None
                     
                 if attacker.color == "black" and defender.color == "red":
                     original_position = self.get_original_position_red(self.squares[defendery][defenderx].piece)
                     attackery_original, attackerx_original = original_position
                     self.squares[attackery_original][attackerx_original].piece = attacker
-                    self.squares[defendery_original][defenderx_original].number += 1
+                    self.squares[attackery_original][attackerx_original].number += 1
                     self.squares[attackery][attackerx].piece = None
 
             elif attacker.rank < defender.rank:
@@ -428,7 +428,7 @@ class Boardgame:
                             black_flag_found = True
                         else:
                             red_flag_found = True
-                    elif piece.rank not in [0, 1]:  # Not Bomb or Flag
+                    elif piece.rank not in [0, 1]:  
                         if piece.color == "black":
                             black_pieces_remaining = True
                         else:
@@ -442,10 +442,12 @@ class Boardgame:
             return "Red wins! Black has no movable pieces left."
         elif not red_pieces_remaining:
             return "Black wins! Red has no movable pieces left."
+        elif not self.has_valid_moves("red") and not self.has_valid_moves("black"):
+            return "Draw!"
         elif not self.has_valid_moves("black"):
-            return "Red wins!"  # Red wins if Black cannot move
+            return "Red wins!"  
         elif not self.has_valid_moves("red"):
-            return "Black wins!"  # Black wins if Red cannot move
+            return "Black wins!"   
         else:
             return None
     

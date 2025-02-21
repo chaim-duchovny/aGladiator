@@ -26,7 +26,9 @@ class Main:
             game.render_number_of_row(screen)
             game.render_letter_of_col(screen)
             game.render_number_of_black_pieces(screen)
+            game.render_name_of_black_pieces(screen)
             game.render_number_of_red_pieces(screen)
+            game.render_name_of_red_pieces(screen)
 
             if self.game_over:
                 self.game.display_win_message(screen)

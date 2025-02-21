@@ -29,7 +29,7 @@ class Main:
             game.render_number_of_red_pieces(screen)
 
             if self.game_over:
-                self.display_win_message(screen)
+                self.game.display_win_message(screen)
         
             if self.highlighted_square1:
                 row, col = self.highlighted_square1
@@ -105,12 +105,6 @@ class Main:
                         return (start_row, start_col)
         
         pygame.display.update()
-
-    def display_win_message(self, surface):
-        font = pygame.font.Font(None, 36)
-        text = font.render(self.win_message, True, (255, 0, 0))
-        text_rect = text.get_rect(center = (WIDTH // 2, HEIGHT // 2))
-        surface.blit(text, text_rect)
 
 main = Main()
 main.mainloop()

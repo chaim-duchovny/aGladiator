@@ -1,8 +1,6 @@
-
 import pygame
 from boardgame import Boardgame
 from const import *
-
 
 class Game:
 
@@ -30,7 +28,6 @@ class Game:
                     color = (119, 154, 88)
 
                 rect = (col * RECT_WIDTH, row * RECT_HEIGHT, RECT_WIDTH, RECT_HEIGHT)
-
                 pygame.draw.rect(surface, color, rect)
             
         for col in range(10, 13):
@@ -129,6 +126,11 @@ class Game:
             rect = (col * RECT_WIDTH, row * RECT_HEIGHT, RECT_WIDTH, RECT_HEIGHT)
             pygame.draw.rect(surface, (0, 255, 0, 128), rect, 3)
         
+    def display_win_message(self, surface):
+        font = pygame.font.Font(None, 36)
+        text = font.render(self.win_message, True, (255, 0, 0))
+        text_rect = text.get_rect(center = (WIDTH // 2, HEIGHT // 2))
+        surface.blit(text, text_rect)
 
     
         

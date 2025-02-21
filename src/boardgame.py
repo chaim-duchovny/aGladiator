@@ -29,55 +29,55 @@ class Boardgame:
     
     def add_pieces_black(self, color):
         pieces = [
-            (6, Bomb), 
-            (1, Marshal), 
-            (1, General),
-            (2, Colonel), 
-            (3, Major), 
-            (4, Captain),
-            (4, Lieutenant), 
-            (4, Sergeant), 
-            (5, Miner),
-            (8, Scout), 
-            (1, Spy), 
-            (1, Flag)
+            (6, "Bom.", Bomb), 
+            (1, "Mar.", Marshal), 
+            (1, "Gen.", General),
+            (2, "Col.", Colonel), 
+            (3, "Maj.", Major), 
+            (4, "Cap.", Captain),
+            (4, "Lie.", Lieutenant), 
+            (4, "Ser.", Sergeant), 
+            (5, "Miner", Miner),
+            (8, "Scout", Scout), 
+            (1, "Spy", Spy), 
+            (1, "Flag", Flag)
         ]
     
         available_squares = [(row, col) for row in range(4) for col in range(10, 13)]
         self.original_positions_black = {}
     
-        for count, piece_class in pieces:
+        for count, name, piece_class in pieces:
             if available_squares:
                 row, col = random.choice(available_squares)
                 piece_instance = piece_class(color)
-                self.squares[row][col] = Square(row, col, count, piece_instance)
+                self.squares[row][col] = Square(row, col, count, name, piece_instance)
                 self.original_positions_black[piece_instance] = (row, col)
                 available_squares.remove((row, col))
 
     def add_pieces_red(self, color):
         pieces = [
-            (6, Bomb), 
-            (1, Marshal), 
-            (1, General),
-            (2, Colonel), 
-            (3, Major), 
-            (4, Captain),
-            (4, Lieutenant), 
-            (4, Sergeant), 
-            (5, Miner),
-            (8, Scout), 
-            (1, Spy), 
-            (1, Flag)
+            (6, "Bom.", Bomb), 
+            (1, "Mar.", Marshal), 
+            (1, "Gen.", General),
+            (2, "Col.", Colonel), 
+            (3, "Maj.", Major), 
+            (4, "Cap.", Captain),
+            (4, "Lie.", Lieutenant), 
+            (4, "Ser.", Sergeant), 
+            (5, "Miner", Miner),
+            (8, "Scout", Scout), 
+            (1, "Spy", Spy), 
+            (1, "Flag", Flag)
         ]
     
         available_squares = [(row, col) for row in range(6, 10) for col in range(10, 13)]
         self.original_positions_red = {}
     
-        for count, piece_class in pieces:
+        for count, name, piece_class in pieces:
             if available_squares:
                 row, col = random.choice(available_squares)
                 piece_instance = piece_class(color)
-                self.squares[row][col] = Square(row, col, count, piece_instance)
+                self.squares[row][col] = Square(row, col, count, name, piece_instance)
                 self.original_positions_red[piece_instance] = (row, col)
                 available_squares.remove((row, col))
         
